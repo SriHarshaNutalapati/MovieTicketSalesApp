@@ -1,0 +1,2 @@
+1) Add models (add __str__ method)
+2) 
