@@ -8,6 +8,9 @@
     {% for movie in movies_list %}
         <div class="col-md-2 movie_tile" id="{{movie.id}}">{{movie.movie|capfirst}}</div>
     {% endfor %}
+    {% if not movies_list %}
+        <p>Uh oh! There aren't any movies currently running in College Park</p>
+    {% endif %}
 </div>
 
 <h4 class="dates_container_header" style="display: none;">Choose Data and Time</h4>
@@ -22,6 +25,8 @@
 <button type="button" class="book_seats" onclick="bookSeats()">Book Tickets</button>
 
 <script type="text/javascript">
+    $(".nav-link").removeClass("active");
+    $(".book_movie_link").addClass("active");
     $(".book_seats").hide();
     $(".movie_tile").click(e => {
         let movie_id = e.target.id;
@@ -121,7 +126,7 @@
 
     function seat_clicked(seat_number){
         if($(".seat_selected").length == 6){
-            alert("Maximum limit reached");
+            bootbox.alert("Maximum limit reached. Only 6 seats are allowed to book at a time.");
             return false;
         }
         let className = `.seat_number_${seat_number}`;
@@ -158,6 +163,9 @@
                     bootbox.alert(response.msg);
                 }
             },
+            error: function(response){
+                console.log("sfhiuh")
+            }
         });
     }
 

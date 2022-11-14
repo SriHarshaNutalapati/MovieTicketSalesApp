@@ -38,6 +38,8 @@
 {% endif %}
 
 <script type="text/javascript" nonce="{{request.csp_nonce}}">
+    $(".nav-link").removeClass("active");
+    $(".add_movie_show").addClass("active");
     $(function(){
         $("#datepicker").datepicker({
             minDate: 1 

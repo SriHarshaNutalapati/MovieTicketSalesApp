@@ -1,9 +1,19 @@
 from django.urls import path
+# import django
 
 from . import views
 
+
+# def custom_page_not_found(request):
+#     return django.views.defaults.page_not_found(request, None)
+
+# def custom_server_error(request):
+#     return django.views.defaults.server_error(request)
+
 urlpatterns = [
-    path('', views.customerHome, name='customerHome'),
+    # path("404/", custom_page_not_found),
+    # path("500/", custom_server_error),
+    path('', views.genericHome, name='genericHome'),
     path('customerhome', views.customerHome, name='customerHome'),
     path('theatrehome', views.theatreHome, name='theatreHome'),
     path('signup', views.userSignUp, name='userSignUp'),

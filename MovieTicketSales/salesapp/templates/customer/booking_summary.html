@@ -7,7 +7,7 @@
 {% if booking_status == 2 %}
     <p>Booking has already been processed!</p>
 {% else %}
-    <p>Your booking Summary</p>
+    <h4>Your booking Summary</h4>
     <p>Movie: {{movie__movie_name}}</p>
     <p>Theatre: {{theatre__theatre_name}}</p>
     <p>Date: {{date}}</p>
@@ -18,6 +18,8 @@
 
 <script>
     function confirmBooking(bookingid){
+        $(".nav-link").removeClass("active");
+        $(".book_movie_link").addClass("active");
         $.ajax({
             url : "/salesapp/confirmBooking",
             type: "POST",

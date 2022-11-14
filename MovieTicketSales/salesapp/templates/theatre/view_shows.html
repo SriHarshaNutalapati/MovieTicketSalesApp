@@ -21,6 +21,8 @@
 {% endfor %}
 
 <script type="text/javascript" nonce="{{request.csp_nonce}}">
+    $(".nav-link").removeClass("active");
+    $(".view_shows_link").addClass("active");
     function cancelShow(movie_name, time, date){
         $.ajax({
             url : "/salesapp/cancelshow",

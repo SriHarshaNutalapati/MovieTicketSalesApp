@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '%$ao2i@z-o+l)=8(#bpv1t$m)dtpooeobed@m6%hdk%avot6kd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -249,3 +249,7 @@ CSP_STYLE_SRC = [
     "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
 ]
 CSP_IMG_SRC = ["* data:;"]
+
+CSRF_FAILURE_VIEW = 'salesapp.views.csrf_failure'
+
+PASSWORD_RESET_TIMEOUT = 60*15 # 15 minutes

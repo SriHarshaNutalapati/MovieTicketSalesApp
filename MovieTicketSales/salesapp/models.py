@@ -9,6 +9,7 @@ from django.core.validators import MinLengthValidator
 from django.db.models import Sum
 from .constants import *
 from .validators import *
+from django.core.exceptions import PermissionDenied
 
 class SalesAppUser(AbstractUser):
     CUSTOMER = 1
@@ -79,7 +80,7 @@ class Theatres(models.Model):
 
     @classmethod
     def get_all_theatres(cls):
-        return list(cls.objects.values("theatre_name", "owner__username", "id"))
+        return list(cls.objects.filter(owner__is_active=True).values("theatre_name", "owner__username", "id"))
 
     @classmethod
     def user_theatre_exists(cls, user):
@@ -194,10 +195,12 @@ class MovieTheatreStore(models.Model):
 
     @classmethod
     def add_movie_show(cls, data):
-        # TODO: Add if show is already present in date and time
         theatre = Theatres.objects.get(owner=data['user'])
         date = datetime.datetime.strptime(data['dateSelected'], '%m/%d/%Y')
         time_slots = MovieTimeSlots.objects.filter(id__in=data['timeSelected'])
+        is_present = cls.objects.filter(theatre=theatre, date=date, time_slots__in=time_slots)
+        if is_present:
+            raise Exception(f"Movie show is already added in the date and atleast one time given.")
         created_show = cls.objects.create(theatre=theatre, date=date, movie_id=data['movieSelected'])
         created_show.time_slots.set(time_slots)
         created_show.save()
@@ -249,11 +252,15 @@ class ApplicationSettings(models.Model):
 
     @classmethod
     def save_settings(cls, data):
-        settings = cls.objects.last()
-        settings.ticket_price = data["ticket_price"]
-        settings.min_seats = data["min_seats"]
-        settings.max_seats = data["max_seats"]
-        settings.save()
+        try:
+            settings = cls.objects.last()
+            if not settings: raise Exception
+            settings.ticket_price = data["ticket_price"]
+            settings.min_seats = data["min_seats"]
+            settings.max_seats = data["max_seats"]
+            settings.save()
+        except Exception as e:
+            cls.objects.create(ticket_price = data["ticket_price"], min_seats = data["min_seats"], max_seats = data["max_seats"])
 
 class BookingStatus(models.Model):
     IN_PROGRESS = 1
@@ -311,7 +318,9 @@ class BookingStatus(models.Model):
         seats_booked=data["selected_seats"], date=date, time_slot=time_slot, total_price=data["ticket_price"])
 
     @classmethod
-    def get_booking_details(cls, bookingid):
+    def get_booking_details(cls, bookingid, user):
+        booking = cls.objects.get(booking_id=bookingid)
+        if(user.id != booking.user.id): raise PermissionDenied
         return BookingStatus.objects.filter(booking_id=bookingid).values("movie__movie_name", "theatre__theatre_name", 
         "seats_booked", "user__username", "date", "time_slot__slot_timing", "total_price", "booking_status")[0]
 
@@ -319,7 +328,7 @@ class BookingStatus(models.Model):
     def confirm_booking(cls, bookingid):
         qs = BookingStatus.objects.filter(booking_id=bookingid, booking_status=2)
         if not qs: BookingStatus.objects.filter(booking_id=bookingid).update(booking_status=cls.SUCCESS)
-        else: raise Exception("There is a problem while booking ticket. Please try again!")
+        else: raise Exception("There is a problem while booking ticket. This booking might have already been confirmed. Are you an attacker?")
 
     @classmethod
     def purchase_history(cls, user):

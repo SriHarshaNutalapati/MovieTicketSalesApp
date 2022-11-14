@@ -36,8 +36,18 @@ def customerHome(request):
         }
         logger.debug(f'Movies list {movies_list}')
     except Exception as e:
-        raise e
+        logger.debug("Error during fetching movies")
     return render(request, 'customer/customer_home.html', data)
+
+@login_required(login_url='/salesapp/login/')
+def genericHome(request):
+    try:
+        user = request.user
+        if user.role == 1: return redirect("/salesapp/customerhome")
+        elif user.role == 2: return redirect("/salesapp/theatrehome")
+        elif user.role == 3: return redirect("/salesapp/viewtheatres")
+    except Exception as e:
+        raise e
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
@@ -56,6 +66,7 @@ def getTheatres(request):
     except Exception as e:
         data["status"] = False
         data["msg"] = str(e)
+        logger.debug("Error during fetching theatres")
     return JsonResponse(data)
 
 @login_required(login_url='/salesapp/login/')
@@ -82,7 +93,7 @@ def theatreHome(request):
         }
         logger.debug(f'Sending data to browser {data}')
     except Exception as e:
-        raise e
+        logger.debug("Error during formatting the movies and theatres list")
     return render(request, 'theatre/theatre_home.html', data)
 
 @login_required(login_url='/salesapp/login/')
@@ -138,7 +149,7 @@ def addMovieShow(request):
         messages.error(request, f'{str(e)}')
     except Exception as e:
         logger.debug(f"Unable to movie show. {str(e)}")
-        messages.error(request, "Unable to movie show")
+        messages.error(request, "Unable to movie show. Movie show may have been already added in the date and atleast one time given.")
     return redirect('/salesapp/theatrehome')
 
 def userLogin(request):
@@ -193,12 +204,14 @@ def userSignUp(request):
         messages.error(request, "Please correct the errors in form.")
     except Exception as e:
         messages.error(request, "Error during signup.")
+        logger.debug(f"Error during user sign up {str(e)}")
     return render(request, 'registration/sign_up.html', {"form": form})
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def changeUserProfile(request):
     try:
+        logger.debug("Entered change user profile")
         if request.method == "POST":
             form = UpdateUserForm(request.POST, instance=request.user)
             if form.is_valid():
@@ -208,24 +221,29 @@ def changeUserProfile(request):
         else:    
             form = UpdateUserForm(instance=request.user)
     except Exception as e:
+        logger.debug(f"Error during fetch user details {str(e)}")
         messages.error(request, "Unable to fetch user details. Please try again!")
     return render(request, 'updateProfile.html', {"form": form})
 
 def activateEmail(request, user, to_email):
-    mail_subject = "Activate your user account."
-    message = render_to_string("registration/activate_account.html", {
-        'user': user.username,
-        'domain': get_current_site(request).domain,
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': account_activation_token.make_token(user),
-        "protocol": 'https' if request.is_secure() else 'http'
-    })
-    email = EmailMessage(mail_subject, message, to=[to_email])
-    if email.send():
-        messages.success(request, f'Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
-                received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
-    else:
-        messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly.')
+    try:
+        logger.debug("Entered activate email")
+        mail_subject = "Activate your user account."
+        message = render_to_string("registration/activate_account.html", {
+            'user': user.username,
+            'domain': get_current_site(request).domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': account_activation_token.make_token(user),
+            "protocol": 'https' if request.is_secure() else 'http'
+        })
+        email = EmailMessage(mail_subject, message, to=[to_email])
+        if email.send():
+            messages.success(request, f'Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
+                    received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
+        else:
+            messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly.')
+    except Exception as e:
+        logger.debug(f"Error during processing email activation {str(e)}")
 
 def activate(request, uidb64, token):
     User = get_user_model()
@@ -235,82 +253,106 @@ def activate(request, uidb64, token):
     except:
         user = None
 
-    if user is not None and account_activation_token.check_token(user, token):
-        user.is_email_verified = True
-        user.save()
-
-        messages.success(request, "Thank you for your email confirmation. Now you can login your account.")
-        return redirect('login')
+    if user is not None:
+        if user.is_email_verified:
+            return render(request, 'registration/email_confirmation.html', {"msg": "Token is invalid and already used for verification"})
+        elif account_activation_token.check_token(user, token):
+            user.is_email_verified = True
+            user.save()
+            return render(request, 'registration/email_confirmation.html', {"msg": "Thank you for your email confirmation. Now you can login to your account."})
+        else:
+            return render(request, 'registration/email_confirmation.html', {"msg": "Token is invalid."})
     else:
-        messages.error(request, "Activation link is invalid!")
-
-    return redirect('homepage')
+        return render(request, 'registration/email_confirmation.html', {"msg": "Token is invalid."})
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def getAvailableSeats(request):
-    data = {}
-    if request.method == 'POST':
-        data["theatre_name"] = request.POST["theatreName"]
-        data["date"] = request.POST["date"]
-        data["time"] = request.POST["time_slot"]
-        seats_availability_data = BookingStatus.get_available_seats(data)
+    seats_availability_data = {}
+    try:
+        logger.debug("Entered getAvailableSeats")
+        data = {}
+        if request.method == 'POST':
+            data["theatre_name"] = request.POST["theatreName"]
+            data["date"] = request.POST["date"]
+            data["time"] = request.POST["time_slot"]
+            seats_availability_data = BookingStatus.get_available_seats(data)
+    except Exception as e:
+        logger.debug(f"Error while processing request {str(e)}")
     return JsonResponse(seats_availability_data)
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def initiateBooking(request):
-    booking_data = json.loads(request.POST["booking_data"])
     json_rep = {"status": True, "msg": ""}
-    if not UserPaymentInformation.payment_details_exist(request.user):
+    try:
+        booking_data = json.loads(request.POST["booking_data"])
+        if not UserPaymentInformation.payment_details_exist(request.user):
+            json_rep["status"] = False
+            json_rep["msg"] = "Payment details. Please update payment details from Payment Information page"
+        else:
+            data={
+                "movieName": booking_data["movieName"],
+                "theatreName": booking_data["theatreName"],
+                "date": booking_data["date"],
+                "selected_seats": booking_data["selected_seats"],
+                "time_slot": booking_data["time_slot"],
+                "ticket_price": ApplicationSettings.get_ticket_price() * len(booking_data["selected_seats"]),
+                "user": request.user
+            }
+            booking_status = BookingStatus.create_booking_status(data)
+            json_rep["booking_status_id"] = booking_status.booking_id
+    except Exception as e:
+        logger.debug("Error during initiate booking")
         json_rep["status"] = False
-        json_rep["msg"] = "Payment details. Please update payment details from Payment Information page"
-    else:
-        data={
-            "movieName": booking_data["movieName"],
-            "theatreName": booking_data["theatreName"],
-            "date": booking_data["date"],
-            "selected_seats": booking_data["selected_seats"],
-            "time_slot": booking_data["time_slot"],
-            "ticket_price": ApplicationSettings.get_ticket_price() * len(booking_data["selected_seats"]),
-            "user": request.user
-        }
-        booking_status = BookingStatus.create_booking_status(data)
-        json_rep["booking_status_id"] = booking_status.booking_id
+        json_rep["msg"] = "Error while booking the seats. Please try again"
     return JsonResponse(json_rep)
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def bookingSummary(request, bookingid):
-    booking_details = BookingStatus.get_booking_details(bookingid)
-    if booking_details["booking_status"] == 2:
-        booking_details = {}
-        booking_details["booking_status"] = 2
-    else:
-        booking_details["time_slot__slot_timing"] = booking_details["time_slot__slot_timing"].strftime("%I:%M %p")
-        booking_details["date"] = booking_details["date"].strftime("%d %b %Y")
-        seats_booked_list = json.loads(booking_details["seats_booked"])
-        booking_details["seats_booked"] = ",".join(str(x) for x in seats_booked_list)
-        booking_details["bookingid"] = bookingid
+    logger.debug("Entered booking summary")
+    booking_details = {}
+    try:
+        user = request.user
+        logger.debug(f"Booking seats for user {user.username}")
+        booking_details = BookingStatus.get_booking_details(bookingid, user)
+        logger.debug(f"Fetched booking details {booking_details}")
+        if booking_details["booking_status"] == 2:
+            booking_details = {}
+            booking_details["booking_status"] = 2
+        else:
+            booking_details["time_slot__slot_timing"] = booking_details["time_slot__slot_timing"].strftime("%I:%M %p")
+            booking_details["date"] = booking_details["date"].strftime("%d %b %Y")
+            seats_booked_list = json.loads(booking_details["seats_booked"])
+            booking_details["seats_booked"] = ",".join(str(x) for x in seats_booked_list)
+            booking_details["bookingid"] = bookingid
+        logger.debug(f"Returning response for booking summary {booking_details}")
+    except Exception as e:
+        logger.debug(f"Error during booking summary. Error: {str(e)}")
     return render(request, 'customer/booking_summary.html', booking_details)
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def confirmBooking(request):
     try:
+        logger.debug("Entered confirmBooking")
         bookingid = request.POST["bookingid"]
         BookingStatus.confirm_booking(bookingid)
+        logger.debug(f"Confirmed booking for booking ID {bookingid}")
         status = True
         message = "Ticket Booked!"
     except Exception as e:
         status = False
         message = str(e)
+        logger.debug(f"An error encountered while confirming the booking. {str(e)}")
     return JsonResponse({"status": status, "message": message})
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def purchasehistory(request):
     try:
+        logger.debug("Entered purchasehistory")
         username = request.POST.get("username", None)
         template = request.POST.get("template", 'customer/booking_history.html')
         user = request.user
@@ -318,25 +360,30 @@ def purchasehistory(request):
         history_details = BookingStatus.purchase_history(user)
     except Exception as e:
         messages.error(request, str(e))
+        logger.debug(f"An error encountered while fetching purchase history. {str(e)}")
     return render(request, template, history_details)
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def userPaymentInfo(request):
-    data = {"payment_details_exist": False}
-    if request.method == "POST":
-        form = UserPaymentDetails(request.POST, instance=request.user)
-        data["form"] = form
-        if form.is_valid():
-            UserPaymentInformation.create_payment_info(form.cleaned_data, form.instance)
-            messages.success(request, "Payment information saved")
-            return redirect('/salesapp/customerhome')
-    else:
-        if UserPaymentInformation.payment_details_exist(request.user):
-            data["payment_details_exist"] = True
-            data["payment_details"] = UserPaymentInformation.get_payment_details(request.user)
+    try:
+        logger.debug("Entered the method userPaymentInfo")
+        data = {"payment_details_exist": False}
+        if request.method == "POST":
+            form = UserPaymentDetails(request.POST, instance=request.user)
+            data["form"] = form
+            if form.is_valid():
+                UserPaymentInformation.create_payment_info(form.cleaned_data, form.instance)
+                messages.success(request, "Payment information saved")
+                return redirect('/salesapp/customerhome')
         else:
-            data["form"] = UserPaymentDetails()
+            if UserPaymentInformation.payment_details_exist(request.user):
+                data["payment_details_exist"] = True
+                data["payment_details"] = UserPaymentInformation.get_payment_details(request.user)
+            else:
+                data["form"] = UserPaymentDetails()
+    except Exception as e:
+        logger.debug(f"An error encountered while userPaymentInfo. {str(e)}")
     return render(request, 'customer/user_payment_info.html', data)
 
 @login_required(login_url='/salesapp/login/')
@@ -351,7 +398,7 @@ def viewticketsales(request):
     except Theatres.DoesNotExist:
         messages.error(request, f'Theatre is not added.')
     except Exception as e:
-        messages.error(request, f'Unable to fetch salaes data. Please try again!')
+        messages.error(request, f'Unable to fetch sales data. Please try again!')
     return render(request, 'theatre/total_sales.html', data)
 
 @login_required(login_url='/salesapp/login/')
@@ -398,7 +445,6 @@ def viewcustomers(request):
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def appsettings(request):
-    curr_time_slots = MovieTimeSlots.get_all_timeslots()
     if request.method == "POST":
         form = ApplicationSettingsForm(request.POST)
         if form.is_valid():
@@ -413,12 +459,17 @@ def appsettings(request):
 @login_required(login_url='/salesapp/login/')
 @check_perm
 def viewshows(request):
+    shows = {}
     try:
         user = request.user
         theatre = Theatres.get_theatre_by_user(user)
         shows = MovieTheatreStore.get_movie_shows(theatre)
+    except Theatres.DoesNotExist:
+        messages.error(request, f'Please add a theatre')
+        logger.debug("Theatre is not added but user is viewing shows")
     except Exception as e:
-        raise e
+        messages.error(request, f'Unable to get the current shows. Please try again!')
+        logger.debug(f"Unable to process request viewshows {str(e)}")
     return render(request, 'theatre/view_shows.html', {"shows": shows}) 
 
 @login_required(login_url='/salesapp/login/')
@@ -475,5 +526,8 @@ def archiveuser(request):
         logger.debug(f"Unable to archive the user {username}. Reason: {str(e)}")
     return JsonResponse(data)
 
+def csrf_failure(request, reason=""):
+    ctx = {'message': 'Another user is already logged in.'}
+    return render(request, 'csrf_failure.html', {"ctx": ctx}) 
     
 

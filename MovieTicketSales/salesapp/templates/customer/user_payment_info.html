@@ -9,7 +9,13 @@
         <button type="submit" class="btn btn-success">Save</button>
     </form>
 {% else %}
+    <h4>Saved payment details</h4>
     <p>Card Number: {{payment_details.cardnumber}}</p>
     <p>Expiry: {{payment_details.expiry}}</p>
 {% endif %}
+
+<script>
+    $(".nav-link").removeClass("active");
+    $(".payment_info_link").addClass("active");
+</script>
 {% endblock %}

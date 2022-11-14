@@ -167,3 +167,11 @@ body{
     width: 80% !important;
     max-width: 100% !important;
 }
+
+.view_theatres_link.active, .view_customers_link.active, .app_settings_link.active, .add_movie_link.active, .update_profile_link.active,
+.add_movie_show.active, .view_shows_link.active, .view_ticket_sales_link.active, .book_movie_link.active, .purchase_hist_link.active, 
+.payment_info_link.active{
+    background: #FFD700;
+    color: #2f2626 !important;
+    border-radius: 30px;
+}

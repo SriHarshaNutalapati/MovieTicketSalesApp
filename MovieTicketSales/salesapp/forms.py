@@ -54,6 +54,12 @@ class UserPaymentDetails(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        if len(cleaned_data["cardnumber"]) != 16:
+            self.add_error("cardnumber", "Card number must be 16 digits")
+        if len(cleaned_data["cvv"]) != 3:
+            self.add_error("cvv", "CVV must be 3 digits")
+        if len(cleaned_data["expiry"]) != 5:
+            self.add_error("expiry", "Please enter in correct format - mm/yy")
         date_pattern = re.compile("^([0-9]{2})\/?([0-9]{2})$")
         if not date_pattern.match(cleaned_data['expiry']):
             self.add_error("expiry", "Please enter in correct format - mm/yy")

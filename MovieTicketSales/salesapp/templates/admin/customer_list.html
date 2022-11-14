@@ -30,6 +30,8 @@
 </div>
 
 <script type="text/javascript">
+    $(".nav-link").removeClass("active");
+    $(".view_customers_link").addClass("active");
     function getUserPaymentHistory(username){
         $.ajax({
             url : "/salesapp/purchasehistory",

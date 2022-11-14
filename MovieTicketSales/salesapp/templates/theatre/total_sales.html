@@ -26,6 +26,8 @@
 <p>Total seats booked: {{total_seats_booked}}</p>
 
 <script>
+    $(".nav-link").removeClass("active");
+    $(".view_shows_link").addClass("active");
     $("#datepicker").datepicker();
     $("#datepicker").datepicker("setDate", new Date());
     function showRevenueOnDate(){
@@ -52,4 +54,9 @@
     }
 </script>
 {% endif %}
+
+<script>
+    $(".nav-link").removeClass("active");
+    $(".view_ticket_sales_link").addClass("active");
+</script>
 {% endblock %}
