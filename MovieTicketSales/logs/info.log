@@ -1610,3 +1610,100 @@ Not Found: /salesapp/static/commons.css
 "GET /salesapp/static/commons.css HTTP/1.1" 404 179
 Not Found: /salesapp/static/commons.css
 "GET /salesapp/static/commons.css HTTP/1.1" 404 179
+Watching for file changes with StatReloader
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+Not Found: /favicon.ico
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+"GET /favicon.ico HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /salesapp/customerhome HTTP/1.1" 200 10624
+Not Found: /static/commons.css
+"GET /static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10624
+Not Found: /static/commons.css
+"GET /static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10624
+Not Found: /static/commons.css
+"GET /static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10624
+Not Found: /static/commons.css
+"GET /static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10624
+Not Found: /static/commons.css
+"GET /static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10624
+Not Found: /static/commons.css
+"GET /static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+"GET /salesapp/customerhome HTTP/1.1" 200 10633
+Not Found: /salesapp/static/commons.css
+"GET /salesapp/static/commons.css HTTP/1.1" 404 179
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 179
+C:\Users\Sri Harsha\Desktop\Secure Coding\NoOneCanHack\MovieTicketSales\MovieTicketSales\settings.py changed, reloading.
+Watching for file changes with StatReloader
