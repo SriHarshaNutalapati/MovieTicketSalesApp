@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
         admin_user = SalesAppUser.objects.create(username=username, email=email, 
         is_email_verified=True, role=3, full_name=full_name)
-        admin_user.set_password("admin@123#")
+        admin_user.set_password("")
         admin_user.save()
 
         print("Admin user created.......")
