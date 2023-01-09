@@ -166,9 +166,9 @@ LOGOUT_REDIRECT_URL = '/salesapp/login'
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'srihar9397@gmail.com'
-EMAIL_HOST_USER = 'srihar9397@gmail.com'
-EMAIL_HOST_PASSWORD = 'joclqtajubpbjtxk'
+EMAIL_FROM = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
