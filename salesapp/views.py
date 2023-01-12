@@ -21,10 +21,13 @@ import json
 import logging
 from .validators import *
 from django.views.decorators.cache import cache_control
+from django.views.decorators.csrf import csrf_exempt
+
 logger = logging.getLogger(__name__)
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def customerHome(request):
     try:
         logger.debug('Entered customer home..')
@@ -40,6 +43,7 @@ def customerHome(request):
     return render(request, 'customer/customer_home.html', data)
 
 @login_required(login_url='/salesapp/login/')
+@csrf_exempt
 def genericHome(request):
     try:
         user = request.user
@@ -51,6 +55,7 @@ def genericHome(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def getTheatres(request):
     data = {}
     data["status"] = True
@@ -71,6 +76,7 @@ def getTheatres(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def theatreHome(request):
     try:
         logger.debug('Entered theatreHome')
@@ -98,6 +104,7 @@ def theatreHome(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def addTheatre(request):
     try:
         logger.debug('Entered addTheatre')
@@ -121,6 +128,7 @@ def addTheatre(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def addMovieShow(request):
     try:
         logger.debug('Entered addMovieShow')
@@ -152,6 +160,7 @@ def addMovieShow(request):
         messages.error(request, "Unable to movie show. Movie show may have been already added in the date and atleast one time given.")
     return redirect('/salesapp/theatrehome')
 
+@csrf_exempt
 def userLogin(request):
     try:
         username = request.POST['username']
@@ -186,6 +195,7 @@ def userLogin(request):
         messages.error(request, "Error during login.")
         return redirect('/salesapp/login/')
 
+@csrf_exempt
 def userSignUp(request):
     try:
         logger.debug('Entered signup')
@@ -210,6 +220,7 @@ def userSignUp(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def changeUserProfile(request):
     try:
         logger.debug("Entered change user profile")
@@ -268,6 +279,7 @@ def activate(request, uidb64, token):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def getAvailableSeats(request):
     seats_availability_data = {}
     try:
@@ -284,6 +296,7 @@ def getAvailableSeats(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def initiateBooking(request):
     json_rep = {"status": True, "msg": ""}
     try:
@@ -311,6 +324,7 @@ def initiateBooking(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def bookingSummary(request, bookingid):
     logger.debug("Entered booking summary")
     booking_details = {}
@@ -335,6 +349,7 @@ def bookingSummary(request, bookingid):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def confirmBooking(request):
     try:
         logger.debug("Entered confirmBooking")
@@ -351,6 +366,7 @@ def confirmBooking(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def purchasehistory(request):
     try:
         logger.debug("Entered purchasehistory")
@@ -366,6 +382,7 @@ def purchasehistory(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def userPaymentInfo(request):
     try:
         logger.debug("Entered the method userPaymentInfo")
@@ -389,6 +406,7 @@ def userPaymentInfo(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def viewticketsales(request):
     try:
         # Theatre owner can only access
@@ -404,6 +422,7 @@ def viewticketsales(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def viewticketsalesondate(request):
     # Theatre owner can only access
     date_selected = request.POST["date_selected"]
@@ -416,6 +435,7 @@ def viewticketsalesondate(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def viewtheatres(request):
     # Admin user can only access
     user = request.user
@@ -424,6 +444,7 @@ def viewtheatres(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def viewticketsalesadmin(request):
     # Admin user can only access
     date_selected = request.POST["date_selected"]
@@ -437,6 +458,7 @@ def viewticketsalesadmin(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def viewcustomers(request):
     # Admin user can only access
     data = {}
@@ -445,6 +467,7 @@ def viewcustomers(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def appsettings(request):
     if request.method == "POST":
         form = ApplicationSettingsForm(request.POST)
@@ -459,6 +482,7 @@ def appsettings(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def viewshows(request):
     shows = {}
     try:
@@ -475,6 +499,7 @@ def viewshows(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def cancelshow(request):
     isShowCancelled = False
     try:
@@ -494,6 +519,7 @@ def cancelshow(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def addmovie(request):
     if request.method == "POST":
         form = AddMovieForm(request.POST)
@@ -506,6 +532,7 @@ def addmovie(request):
 
 @login_required(login_url='/salesapp/login/')
 @check_perm
+@csrf_exempt
 def archiveuser(request):
     try:
         logger.debug("Entered archiveuser method")

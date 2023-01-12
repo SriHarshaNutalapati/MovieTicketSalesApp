@@ -206,50 +206,19 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
 ]
 
-SESSION_COOKIE_HTTPONLY = True
-CSRF_COOKIE_HTTPONLY = True
-SESSION_COOKIE_PATH = '/;HttpOnly'
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
-SESSION_COOKIE_SAMESITE = "Strict"
-SESSION_COOKIE_AGE = 5*1800
+# SESSION_COOKIE_HTTPONLY = True
+# CSRF_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_PATH = '/;HttpOnly'
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# X_FRAME_OPTIONS = 'DENY'
+# SESSION_COOKIE_SAMESITE = "Strict"
+# SESSION_COOKIE_AGE = 5*1800
 # SECURE_SSL_REDIRECT = True 
 # SECURE_HSTS_SECONDS = 15768000
 # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # SECURE_HSTS_PRELOAD = True
 
-CSP_DEFAULT_SRC = [
-    "'self'",
-    "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu72xKOzY.woff2",
-    "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu5mxKOzY.woff2",
-    "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu7mxKOzY.woff2",
-    "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4WxKOzY.woff2",
-    "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu7WxKOzY.woff2",
-    "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu7GxKOzY.woff2",
-    "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2"
-]
-CSP_SCRIPT_SRC = [
-    "'self'",
-    "'unsafe-inline'",
-    "https://code.jquery.com/jquery-3.6.1.min.js",
-    "https://code.jquery.com/ui/1.13.1/jquery-ui.js",
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js",
-    "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"
-]
-CSP_STYLE_SRC = [
-    "'self'",
-    "'unsafe-inline'",
-    "https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css",
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css",
-    "https://fonts.googleapis.com/css",
-    "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
-]
-CSP_IMG_SRC = ["* data:;"]
-
 CSRF_FAILURE_VIEW = 'salesapp.views.csrf_failure'
-
-PASSWORD_RESET_TIMEOUT = 60*15 # 15 minutes
