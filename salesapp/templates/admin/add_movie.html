@@ -5,7 +5,7 @@
 
 <h3>Add Movie</h3>
 <form method="post" action="/salesapp/addmovie">
-  {% csrf_token %}
+  
   {{form|crispy}}
   <button type="submit" class="btn btn-success">Add movie</button>
 </form>

@@ -7,7 +7,7 @@
     <h2 style="text-align: center;">Theatre name: {{theatre_name}}</h2>
     <h4>Add Movie Show</h4>
     <form class="add_theatre_form" method="post" action="/salesapp/addMovieShow">
-        {% csrf_token %}
+        
         <label for="movieSelected">Movie Name</label>
         <select class="form-control" name="movieSelected" style="margin-bottom: 1rem">
             {% for movie in movies_list %}
@@ -26,7 +26,7 @@
 {% else %}
     <p> Welcome to the Movie Ticket Sales App. Add your movie theatre to get started!! </p>
     <form class="add_new_theatre_form" method="post" action="/salesapp/addtheatre">
-        {% csrf_token %}
+        
         <label for="theatrename">Theatre Name</label>
         <input type="text" name="theatrename" class="form-control" placeholder="Enter Theatre Name" />
 

@@ -13,7 +13,7 @@
 
 <h3>Login</h3>
 <form method="post" action="/salesapp/userlogin">
-  {% csrf_token %}
+  
   {{form|crispy}}
   <p>Don't have an account? Create one <a href="/salesapp/signup">Here</a>!</p>
   <button type="submit" class="btn btn-success">Login</button>
