@@ -26,7 +26,7 @@ SECRET_KEY = '%$ao2i@z-o+l)=8(#bpv1t$m)dtpooeobed@m6%hdk%avot6kd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['movieticketsales.herokuapp.com', "*"]
 
 
 # Application definition
