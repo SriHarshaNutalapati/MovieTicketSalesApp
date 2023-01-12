@@ -194,8 +194,9 @@ def userSignUp(request):
             if form.is_valid():
                 user = form.save(commit=False)
                 user.set_password(request.POST["password"])
+                user.is_email_verified = True
                 user.save()
-                activateEmail(request, user, form.cleaned_data.get('email'))
+                # activateEmail(request, user, form.cleaned_data.get('email'))
                 return redirect('/salesapp/login/')
         else:
             form = RegisterForm()
